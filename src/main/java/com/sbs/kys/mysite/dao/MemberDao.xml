@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sbs.kys.mysite.dao.MemberDao">
+
+	<select id="getMemberById" resultType="Member">
+		SELECT *
+		FROM member
+		WHERE
+		id = #{id}
+	</select>
+
+	<select id="doFindLoginId" resultType="Member">
+		SELECT *
+		FROM member
+		WHERE
+		name = #{name}
+		AND email = #{email}
+	</select>
+
+	<select id="getLoginIdDupCount" resultType="int">
+		SELECT COUNT(*) AS
+		cnt
+		FROM member
+		WHERE loginId = #{loginId}
+	</select>
+
+	<select id="nicknameCheck" resultType="int">
+		SELECT COUNT(*) AS
+		cnt
+		FROM
+		member
+		WHERE nickname = #{nickname}
+	</select>
+
+	<select id="getMemberByLoginId" resultType="Member">
+		SELECT *
+		FROM member
+		WHERE loginId = #{loginId}
+	</select>
+
+	<insert id="join" useGeneratedKeys="true" keyProperty="id">
+		INSERT
+		INTO member
+		SET regDate = NOW(),
+		updateDate = NOW(),
+		authStatus = 0,
+		loginId = #{loginId},
+		loginPw = #{loginPw},
+		`name` = #{name},
+		nickname =
+		#{nickname},
+		email = #{email}
+	</insert>
+	<update id="modify">
+		UPDATE `member`
+		SET updateDate = NOW(),
+		nickname =
+		#{nickname}
+		WHERE id = #{id}
+	</update>
+
+	<select id="memberPwConfirm" resultType="Member">
+		SELECT *
+		FROM member
+		WHERE id = #{id}
+		AND loginPw = #{loginPw}
+	</select>
+
+	<update id="pwModify">
+		UPDATE `member`
+		SET updateDate = NOW(),
+		loginPw =
+		#{loginPw}
+		WHERE id = #{id}
+	</update>
+</mapper>
