@@ -70,15 +70,20 @@ public class ArticleController {
 		if ( listUrl == null ) {
 			listUrl = "./" + boardCode + "-list";
 		}
+		
+	
+		
 		Board board = articleService.getBoardByCode(boardCode);
 		model.addAttribute("board", board);
 		int id = Integer.parseInt((String) param.get("id"));
+		
+		articleService.hitUp(id);
 		
 		Member loginedMember = (Member)req.getAttribute("loginedMember");
 		
 		Article article = articleService.getForPrintArticle(loginedMember, id);
 		
-		System.err.println("asdfasg : " + article.getExtra().get("writer"));
+		
 		
 		model.addAttribute("article", article);
 		model.addAttribute("listUrl", listUrl);

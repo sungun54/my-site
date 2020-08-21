@@ -17,17 +17,21 @@
 				<th>날짜</th>
 				<th>제목</th>
 				<th>작성자</th>
+				<th>조회수</th>
 			</tr>
 		</thead>
 		<tbody>
 			<c:forEach items="${articles}" var="article">
-				<tr>
-					<td>${article.id}</td>
-					<td>${article.regDate}</td>
-					<td><a href="${article.getDetailLink(board.code)}">${article.title}</a>
-					</td>
-					<td>${article.extra.writer}</td>
-				</tr>
+				<c:if test="${article.boardId == board.id}">
+					<tr>
+						<td>${article.id}</td>
+						<td>${article.regDate}</td>
+						<td><a href="${article.getDetailLink(board.code)}">${article.title}</a>
+						</td>
+						<td>${article.extra.writer}</td>
+						<td>${article.hit}</td>
+					</tr>
+				</c:if>
 			</c:forEach>
 		</tbody>
 	</table>

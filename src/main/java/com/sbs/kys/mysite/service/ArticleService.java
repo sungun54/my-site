@@ -54,4 +54,8 @@ public class ArticleService {
 	public boolean actorCanDelete(Member actor, Article article) {
 		return actorCanModify(actor, article);
 	}
+
+	public void hitUp(int id) {
+		articleDao.hitUp(id);
+	}
 }

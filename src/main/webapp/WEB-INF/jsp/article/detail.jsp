@@ -17,6 +17,10 @@
 				<td>${article.title}</td>
 			</tr>
 			<tr>
+				<th>작성자</th>
+				<td>${article.hit}</td>
+			</tr>
+			<tr>
 				<th>작성 날짜</th>
 				<td>${article.regDate}</td>
 			</tr>
