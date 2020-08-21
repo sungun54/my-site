@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+
 import com.sbs.kys.mysite.dto.Article;
 import com.sbs.kys.mysite.dto.Board;
+import com.sbs.kys.mysite.dto.Member;
 import com.sbs.kys.mysite.service.ArticleService;
 import com.sbs.kys.mysite.util.Util;
 
@@ -61,5 +63,26 @@ public class ArticleController {
 		model.addAttribute("articles", articles);
 
 		return "article/list";
+	}
+	
+	@RequestMapping("/usr/article/{boardCode}-detail")
+	public String showDetail(Model model, @PathVariable("boardCode") String boardCode, @RequestParam Map<String, Object> param, HttpServletRequest req, String listUrl) {
+		if ( listUrl == null ) {
+			listUrl = "./" + boardCode + "-list";
+		}
+		Board board = articleService.getBoardByCode(boardCode);
+		model.addAttribute("board", board);
+		int id = Integer.parseInt((String) param.get("id"));
+		
+		Member loginedMember = (Member)req.getAttribute("loginedMember");
+		
+		Article article = articleService.getForPrintArticle(loginedMember, id);
+		
+		System.err.println("asdfasg : " + article.getExtra().get("writer"));
+		
+		model.addAttribute("article", article);
+		model.addAttribute("listUrl", listUrl);
+		
+		return "article/detail";
 	}
 }

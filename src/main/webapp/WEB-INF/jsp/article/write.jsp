@@ -31,7 +31,6 @@
 <form method="POST" class="table-box con form1" action="${board.code}-doWrite"
 	onsubmit="ArticleWriteForm__submit(this); return false;">
 	<input type="hidden" name="redirectUri" value="/usr/article/${board.code}-detail?id=#id">
-
 	<table>
 		<colgroup>
 			<col width="100"></col>

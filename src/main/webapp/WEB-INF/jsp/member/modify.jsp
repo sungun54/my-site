@@ -15,63 +15,7 @@
 			return;
 		}
 
-		form.loginId.value = form.loginId.value.trim();
-		form.loginId.value = form.loginId.value.replaceAll('-', '');
-		form.loginId.value = form.loginId.value.replaceAll('_', '');
-		form.loginId.value = form.loginId.value.replaceAll(' ', '');
 
-		if (form.loginId.value.length == 0) {
-			form.loginId.focus();
-			alert('로그인 아이디를 입력해주세요.');
-
-			return;
-		}
-
-		if (form.loginId.value.length < 4) {
-			form.loginId.focus();
-			alert('로그인 아이디 4자 이상 입력해주세요.');
-
-			return;
-		}
-
-		form.loginPw.value = form.loginPw.value.trim();
-
-		if (form.loginPw.value.length == 0) {
-			form.loginPw.focus();
-			alert('로그인 비밀번호를 입력해주세요.');
-
-			return;
-		}
-
-		if (form.loginPw.value.length < 5) {
-			form.loginPw.focus();
-			alert('로그인 비밀번호를 5자 이상 입력해주세요.');
-
-			return;
-		}
-
-		if (form.loginPwConfirm.value.length == 0) {
-			form.loginPwConfirm.focus();
-			alert('로그인 비밀번호 확인을 입력해주세요.');
-
-			return;
-		}
-
-		if (form.loginPw.value != form.loginPwConfirm.value) {
-			form.loginPwConfirm.focus();
-			alert('로그인 비밀번호 확인이 일치하지 않습니다.');
-
-			return;
-		}
-
-		form.name.value = form.name.value.trim();
-
-		if (form.name.value.length == 0) {
-			form.name.focus();
-			alert('이름을 입력해주세요.');
-
-			return;
-		}
 
 		form.nickname.value = form.nickname.value.trim();
 
@@ -87,42 +31,6 @@
 			alert('닉네임은 8자 이하로 입력해주세요.');
 			return;
 		}
-
-		form.email.value = form.email.value.trim();
-
-		if (form.email.value.length == 0) {
-			form.email.focus();
-			alert('이메일을 입력해주세요.');
-
-			return;
-		}
-
-		form.cellphoneNo.value = form.cellphoneNo.value.trim();
-		form.cellphoneNo.value = form.cellphoneNo.value.replaceAll('-', '');
-		form.cellphoneNo.value = form.cellphoneNo.value.replaceAll(' ', '');
-
-		if (form.cellphoneNo.value.length == 0) {
-			form.cellphoneNo.focus();
-			alert('휴대전화번호를 입력해주세요.');
-
-			return;
-		}
-
-		if (form.cellphoneNo.value.length < 10) {
-			form.cellphoneNo.focus();
-			alert('휴대폰번호를 10자 이상 입력해주세요.');
-
-			return;
-		}
-
-		if (isCellphoneNo(form.cellphoneNo.value)) {
-			form.cellphoneNo.focus();
-			alert('휴대전화번호를 정확히 입력해주세요.');
-		}
-
-		form.loginPwReal.value = sha256(form.loginPw.value);
-		form.loginPw.value = '';
-		form.loginPwConfirm.value = '';
 
 		form.submit();
 		MemberUpdateForm__submitDone = true;
