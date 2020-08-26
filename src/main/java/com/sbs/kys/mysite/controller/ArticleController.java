@@ -69,21 +69,14 @@ public class ArticleController {
 	public String showDetail(Model model, @PathVariable("boardCode") String boardCode, @RequestParam Map<String, Object> param, HttpServletRequest req, String listUrl) {
 		if ( listUrl == null ) {
 			listUrl = "./" + boardCode + "-list";
-		}
-		
-	
+		}	
 		
 		Board board = articleService.getBoardByCode(boardCode);
 		model.addAttribute("board", board);
-		int id = Integer.parseInt((String) param.get("id"));
-		
-		articleService.hitUp(id);
-		
-		Member loginedMember = (Member)req.getAttribute("loginedMember");
-		
-		Article article = articleService.getForPrintArticle(loginedMember, id);
-		
-		
+		int id = Integer.parseInt((String) param.get("id"));		
+		articleService.hitUp(id);		
+		Member loginedMember = (Member)req.getAttribute("loginedMember");		
+		Article article = articleService.getForPrintArticle(loginedMember, id);		
 		
 		model.addAttribute("article", article);
 		model.addAttribute("listUrl", listUrl);

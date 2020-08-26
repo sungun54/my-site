@@ -4,11 +4,11 @@
 
 <c:set var="pageTitle" value="${board.name} 게시물 작성" />
 <%@ include file="../part/head.jspf"%>
-
+<%@ include file="../part/toastuiEditor.jspf"%>
 <script>
 	var ArticleWriteForm__submitDone = false;
 	function ArticleWriteForm__submit(form) {
-		if ( ArticleWriteForm__submitDone ) {
+		if (ArticleWriteForm__submitDone) {
 			alert('처리중입니다.');
 			return;
 		}
@@ -18,19 +18,25 @@
 			alert('제목을 입력해주세요.');
 			return;
 		}
-		form.body.value = form.body.value.trim();
-		if (form.body.value.length == 0) {
-			form.body.focus();
-			alert('내용을 입력해주세요.');
+		var bodyEditor = $(form).find('.toast-editor.input-body').data(
+				'data-toast-editor');
+		var body = bodyEditor.getMarkdown().trim();
+		if (body.length == 0) {
+			bodyEditor.focus();
+			alert('특이사항을 입력해주세요.');
 			return;
 		}
+		form.body.value = body;
 
 		form.submit();
 	}
 </script>
-<form method="POST" class="table-box con form1" action="${board.code}-doWrite"
+<form method="POST" class="table-box con form1"
+	action="${board.code}-doWrite"
 	onsubmit="ArticleWriteForm__submit(this); return false;">
-	<input type="hidden" name="redirectUri" value="/usr/article/${board.code}-detail?id=#id">
+	<input type="hidden" name="redirectUri"
+		value="/usr/article/${board.code}-detail?id=#id"> <input
+		type="hidden" name="body" />
 	<table>
 		<colgroup>
 			<col width="100"></col>
@@ -49,7 +55,20 @@
 				<th>내용</th>
 				<td>
 					<div class="form-control-box">
-						<textarea placeholder="내용을 입력해주세요." name="body" maxlength="2000"></textarea>
+						<script type="text/x-template">
+# 제목
+![img](https://placekitten.com/200/287)
+이미지는 이렇게 씁니다.
+
+# 유투브 동영상 첨부
+
+아래와 같이 첨부할 수 있습니다.
+
+```youtube
+https://www.youtube.com/watch?v=LmgWxezH7cc```
+                        </script>
+						<div data-relTypeCode="article" data-relId="0"
+							class="toast-editor input-body"></div>
 					</div>
 				</td>
 			</tr>
@@ -57,8 +76,8 @@
 			<tr>
 				<th>작성</th>
 				<td>
-					<button class="btn btn-primary" type="submit">작성</button>
-					<a class="btn btn-info" href="${listUrl}">리스트</a>
+					<button class="btn btn-primary" type="submit">작성</button> <a
+					class="btn btn-info" href="${listUrl}">리스트</a>
 				</td>
 			</tr>
 		</tbody>
