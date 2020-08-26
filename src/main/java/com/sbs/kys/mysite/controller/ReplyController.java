@@ -78,8 +78,8 @@ public class ReplyController {
 		}
 
 		Map<String, Object> modfiyReplyParam = Util.getNewMapOf(param, "id", "body");
-		ResultData rd = replyService.modfiyReply(modfiyReplyParam);
+		replyService.modfiyReply(modfiyReplyParam);
 
-		return rd;
+		return new ResultData("S-1", String.format("%d번 댓글을 수정하였습니다.", Util.getAsInt(param.get("id"))), param);	
 	}
 }

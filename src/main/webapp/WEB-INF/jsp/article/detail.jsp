@@ -223,12 +223,9 @@
 
 		// 댓글 수정 시작
 		$.post('../reply/doModifyReplyAjax', {
-			id : param.id,
-			body : body,
-		}, onModifyReplyComplete, 'json');
-
-		// 댓글 수정이 완료되면 실행되는 함수
-		var onModifyReplyComplete = function(data) {
+			id : id,
+			body : body
+		}, function(data) {
 			if (data.resultCode && data.resultCode.substr(0, 2) == 'S-') {
 				// 성공시에는 기존에 그려진 내용을 수정해야 한다.!!
 				var $tr = $('.reply-list-box tbody > tr[data-id="' + id
@@ -242,9 +239,8 @@
 
 			ReplyList__hideModifyFormModal();
 			ReplyList__submitModifyFormDone = false;
-		};
+		}, 'json');
 
-		form.submit();
 	}
 
 	function ReplyList__showModifyFormModal(el) {
@@ -308,11 +304,15 @@
 		var $tr = $(el).closest('tr');
 
 		var id = $tr.attr('data-id');
-
+		var relTypeCode = "article";
+		
 		$.post('./../reply/doDeleteReplyAjax', {
-			relId : param.id,
-			relTypeCode : form.relTypeCode.value,
+			id : id,
+			relTypeCode : relTypeCode
 		}, function(data) {
+			if (data.msg) {
+				alert(data.msg);
+			}
 			$tr.remove();
 		}, 'json');
 	}
