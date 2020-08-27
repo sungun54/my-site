@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sbs.kys.mysite.dto.Member;
 import com.sbs.kys.mysite.dto.ResultData;
@@ -24,23 +25,23 @@ public class MemberController {
 	public String showFindLoginId() {
 		return "member/findLoginId";
 	}
-	
+
 	@RequestMapping("/usr/member/doFindLoginId")
 	public String doFindLoginId(@RequestParam Map<String, Object> param, String email, String name, Model model) {
-		
+
 		Member member = memberService.doFindLoginId(email, name);
-		
+
 		if (member == null) {
 			model.addAttribute("historyBack", true);
 			model.addAttribute("alertMsg", "비밀번호가 일치하지 않습니다.");
 			return "common/redirect";
 		}
-		
+
 		model.addAttribute("windowClose", true);
-		model.addAttribute("alertMsg", member.getLoginId() + "입니다.");		
+		model.addAttribute("alertMsg", member.getLoginId() + "입니다.");
 		return "common/redirect";
 	}
-	
+
 	@RequestMapping("/usr/member/pwModify")
 	public String showPwModify() {
 		return "member/pwModify";
@@ -116,7 +117,7 @@ public class MemberController {
 	@RequestMapping("/usr/member/doJoin")
 	public String doJoin(@RequestParam Map<String, Object> param, Model model) {
 		Util.changeMapKey(param, "loginPwReal", "loginPw");
-		
+
 		ResultData checkLoginIdJoinableResultData = memberService
 				.checkLoginIdJoinable(Util.getAsStr(param.get("loginId")));
 
@@ -125,6 +126,25 @@ public class MemberController {
 			model.addAttribute("alertMsg", checkLoginIdJoinableResultData.getMsg());
 			return "common/redirect";
 		}
+		
+		ResultData checkEmailJoinableResultData = memberService
+				.isJoinableEmail(Util.getAsStr(param.get("email")));
+
+		if (checkEmailJoinableResultData.isFail()) {
+			model.addAttribute("historyBack", true);
+			model.addAttribute("alertMsg", checkEmailJoinableResultData.getMsg());
+			return "common/redirect";
+		}
+		
+		ResultData checkNicknameJoinableResultData = memberService
+				.nicknameCheck(Util.getAsStr(param.get("nickname")));
+
+		if (checkNicknameJoinableResultData.isFail()) {
+			model.addAttribute("historyBack", true);
+			model.addAttribute("alertMsg", checkNicknameJoinableResultData.getMsg());
+			return "common/redirect";
+		}
+		
 		int newMemberId = memberService.join(param);
 
 		String redirectUri = (String) param.get("redirectUri");
@@ -172,5 +192,31 @@ public class MemberController {
 
 		model.addAttribute("redirectUri", redirectUri);
 		return "common/redirect";
+	}
+	
+	@RequestMapping("/usr/member/loginIdDup")
+	@ResponseBody
+	private ResultData loginIdDup(String loginId) {		
+		ResultData isJoinableLoginId = memberService.checkLoginIdJoinable(loginId);
+		
+		return isJoinableLoginId;
+	}
+
+	@RequestMapping("/usr/member/nicknameDup")
+	@ResponseBody
+	private ResultData nicknameDup(String nickname) {
+
+		ResultData isJoinableNickname = memberService.nicknameCheck(nickname);
+
+		return isJoinableNickname;
+	}
+	
+	@RequestMapping("/usr/member/emailDup")
+	@ResponseBody
+	private ResultData emailDup(String email) {
+
+		ResultData isJoinableEmail = memberService.isJoinableEmail(email);
+
+		return isJoinableEmail;
 	}
 }

@@ -18,4 +18,5 @@ public interface MemberDao {
 	Member memberPwConfirm(int id, String loginPw);
 	void pwModify(int id, String loginPw);
 	Member doFindLoginId(String email, String name);
+	int emailCheck(String email);
 }

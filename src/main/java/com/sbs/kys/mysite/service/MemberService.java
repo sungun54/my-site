@@ -83,4 +83,15 @@ public class MemberService {
 	public Member doFindLoginId(String email, String name) {
 		return memberDao.doFindLoginId(email, name);
 	}
+
+	public ResultData isJoinableEmail(String email) {
+		int count = memberDao.emailCheck(email);
+
+		if (count == 0) {
+			return new ResultData("S-1", "사용가능한 이메일 입니다.", "email", email);
+		}
+
+		return new ResultData("F-1", "이미 사용중인 이메일 입니다.", "email", email);
+	}
+
 }
